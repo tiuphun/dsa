@@ -1,0 +1,28 @@
+[BINARY SEARCH]
+Given a sequence in increasing order. Find an element a[i] s.t a[i] = B (a desired value).
+
+* Brute Force: O(n)
+    for(i -> n) do if a[i] = b return i;
+    return -1; //if not found
+
+* Binary Search: O(nlogn)
+    Search from the middle.
+
+    middle = (LeftIndex + RightIndex)/2
+    if a[middle] = B return middle;
+    if a[middle] > B -> search left sub-sequence;
+    if a[middle] < B -> search right sub-sequence;
+    return -1;
+
+    int BinarySearch(int a[], int LeftIndex, int RightIndex, int B){
+        if(LeftIndex > RightIndex) return -1;
+        if(LeftIndex == RightIndex){
+            if(a[LeftIndex] == B) return LeftIndex;
+            else return -1; 
+        }
+        int middle = (LeftIndex + RightIndex)/2
+        if (a[middle] == B) return middle;
+        if (a[middle] > B) return BinarySearch(a, LeftIndex, middle-1, B);
+        if (a[middle] < B) return BinarySearch(a, middle+1, RightIndex, B);
+        return -1;
+    }
