@@ -147,5 +147,6 @@ void run()
 int main(void)
 {
     for (int i=0; i<M; i++) root[i] = NULL;
+    freopen("input.txt", "r", stdin);
     run();
 }

@@ -1,5 +1,5 @@
 // Telco problem in week15, implemented in hash table + binary search tree
-/* NOT DONE: WRONG (p NULL)
+/* DONE
 Write a C program to perform some queries on a telco data (comming from stdin) with the following format:
 The first block of data consists of lines (terminated by a line containing #), each line is under the form: 
         call <from_number> <to_number> <date> <from_time> <end_time> 
@@ -38,8 +38,7 @@ Output
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define SIZE 100
-#define H 10007
+#define M 10007
 #define MAX_LENGTH 100
 typedef struct record
 {
@@ -49,14 +48,14 @@ typedef struct record
     struct record* leftChild;
     struct record* rightChild;
 }node;
-node* T[SIZE] = {NULL}; //the array of heads of the BST
-int totalCalls;
+node* root[M] = {NULL}; //the array of roots of the BST
+int totalCalls = 0;
 int ansCheckNumber = 1;
 int hash(char* s){
     int n = strlen(s);
     int code = 0;
     for (int i = 0; i < n; i++){
-        code = (code * 256 + (s[i]-'0')) % H;
+        code = (code * 256 + (s[i]-'0')) % M;
     }
     return code;
 }
@@ -69,28 +68,20 @@ node* makeNode(char* fromNumber, int call, int duration){
     newNode->rightChild = NULL;
     return newNode;
 }
-node* findBST(node* root, char* number){
+node* find(node* root, char* number){
     if (root == NULL) return NULL;
     int c = strcmp(root->fromNumber, number);
     if (c == 0) return root;
-    else if (c < 0) return findBST(root->rightChild, number);
-    else return findBST(root->leftChild, number);
-}
-node* find(char* number){
-    int index = hash(number);
-    return findBST(T[index], number);
-}   
-node* insertBST(node* root, char* fromNumber, int call, int duration){
+    else if (c < 0) return find(root->rightChild, number);
+    else return find(root->leftChild, number);
+} 
+node* insert(node* root, char* fromNumber, int call, int duration){
     if (root == NULL) return makeNode(fromNumber, call, duration);
     int c = strcmp(root->fromNumber, fromNumber);
     if (c == 0) return root;
-    if (c < 0) root->rightChild = insertBST(root->rightChild, fromNumber, call, duration);
-    else root->leftChild = insertBST(root->leftChild, fromNumber, call, duration);
+    if (c < 0) root->rightChild = insert(root->rightChild, fromNumber, call, duration);
+    else root->leftChild = insert(root->leftChild, fromNumber, call, duration);
     return root;
-}
-node* insert(char* number, int call, int duration){
-    int index = hash(number);
-    return insertBST(T[index], number, call, duration);
 }
 int convertTime(char* t){
     int hour = (t[0]-'0')*10 + (t[1] - '0');
@@ -101,7 +92,10 @@ int convertTime(char* t){
 }
 int checkNumber(char* number){
     if(strlen(number) != 10) return 0;
-    for (int i = 0; i < 10; i++) if(number[i] < '0' || number[i] > '9') return 0;
+    for (int i = 0; i < 10; i++) {
+        if(number[i] < '0' || number[i] > '9') 
+            return 0;
+    }
     return 1;
 }
 void input(){
@@ -121,21 +115,24 @@ void input(){
             scanf("%s %s %s %s %s", fromNumber, toNumber, date, startTime, endTime);
             //printf("from = %s, to = %s, date = %s, start = %s, end = %s\n", fromNumber, toNumber, date, startTime, endTime);
             duration = convertTime(endTime) - convertTime(startTime);
-            node* p = find(fromNumber);
+            int index = hash(fromNumber);
+            node* p = find(root[index], fromNumber);
             if (p != NULL) {
                 p->call++;
                 p->duration += duration;
             }
             else {
-                insert(fromNumber, 1, duration); 
+                root[index] = insert(root[index], fromNumber, 1, duration); 
                 if (checkNumber(fromNumber) == 0 || checkNumber(toNumber) == 0) ansCheckNumber = 0;
             }
+            totalCalls+=1;
         }
     }
 }
 void queries(){
     char cmd[100];
     char number[11]; 
+    int index;
     while (1)
     {
         scanf("%s", cmd);
@@ -145,14 +142,16 @@ void queries(){
         }
         else if(strcmp(cmd, "?number_calls_from") == 0){
             scanf("%s", number);
-            node* p = find(number);
+            index = hash(number);
+            node* p = find(root[index], number);
             if (p == NULL) printf("0\n");
             else printf("%d\n", p->call);
         }
         else if(strcmp(cmd, "?number_total_calls") == 0) printf("%d\n", totalCalls);
         else if(strcmp(cmd, "?count_time_calls_from") == 0){
             scanf("%s", number);
-            node* p = find(number);
+            index = hash(number);
+            node* p = find(root[index],number);
             if (p == NULL) printf("0\n");
             else printf("%d\n", p->duration);
         }
