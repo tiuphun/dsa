@@ -7,18 +7,37 @@ typedef struct tree
     struct tree* LeftMostChild;
     struct tree* RightSibling;
 }node;
-int leaves;
-node* makeNode(int data){
+node* MakeNode(int u){
     node* newNode = (node*)malloc(sizeof(node));
-    newNode->key = data;
-    newNode->LeftMostChild = NULL;
-    newNode->RightSibling = NULL;
-    return newNode;
+    if (newNode == NULL) return NULL;
+    else{
+        newNode->data = u;
+        newNode->LeftMostChild = NULL;
+        newNode->RightSibling = NULL;
+        return newNode;
+    }
+}
+node* find(node* root, int data){ 
+    if (root == NULL) return NULL;
+    if (root->data == data) return root;
+    node* p = root->LeftMostChild;
+    while (p != NULL) {
+        node* q = find(p, data);
+        if (q != NULL) return q;
+        p = p->RightSibling;
+    }
+    return NULL;
 }
 int countNodes(node* root){
-    if(root == NULL) return 0;
-    int count = 1;
-    for (node* p = root->LeftMostChild; p != NULL; p = p->RightSibling) count += countNodes(p);
+    
+}
+int CountKChildren(node* r, int k){
+    int count = 0;
+    if (r == NULL) return 0;
+    int nodes = 0;
+    for (node* p = r->LeftMostChild; p != NULL; p = p->RightSibling) nodes++;
+    if (nodes == k) count++;
+    for (node* p = r->LeftMostChild; p != NULL; p = p->RightSibling) count += CountKChildren(p, k);
     return count;
 }
 int height(node* root){
@@ -31,7 +50,7 @@ int height(node* root){
     return max_height + 1;
 }
 void traversal(node* root){
-    printf("%d ", root->key); //change data type accordingly
+    printf("%d ", root->key);
     node* p = root->LeftMostChild;
     while (p != NULL) {
         traversal(p);
@@ -39,10 +58,11 @@ void traversal(node* root){
     }
 }
 int CountLeaves(node* r){
-    if(r == NULL) leaves += 0;
-    if(r->LeftMostChild == NULL) leaves +=1;
-    for(node* p = r->LeftMostChild; p!= NULL; p = p->RightSibling){
-        leaves = CountLeaves(p);
+    int leaves = 0;
+    if (r == NULL) return 0; 
+    if (r->LeftMostChild == NULL) return 1;
+    for (node* p = r->LeftMostChild; p!= NULL; p = p->RightSibling){
+        leaves += CountLeaves(p);
     }
     return leaves;
 }
