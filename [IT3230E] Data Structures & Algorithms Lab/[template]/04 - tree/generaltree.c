@@ -11,18 +11,18 @@ node* MakeNode(int u){
     node* newNode = (node*)malloc(sizeof(node));
     if (newNode == NULL) return NULL;
     else{
-        newNode->data = u;
+        newNode->key = u;
         newNode->LeftMostChild = NULL;
         newNode->RightSibling = NULL;
         return newNode;
     }
 }
-node* find(node* root, int data){ 
+node* find(node* root, int key){ 
     if (root == NULL) return NULL;
-    if (root->data == data) return root;
+    if (root->key == key) return root;
     node* p = root->LeftMostChild;
     while (p != NULL) {
-        node* q = find(p, data);
+        node* q = find(p, key);
         if (q != NULL) return q;
         p = p->RightSibling;
     }
