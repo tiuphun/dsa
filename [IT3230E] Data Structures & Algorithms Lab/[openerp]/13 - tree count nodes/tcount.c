@@ -34,4 +34,106 @@
     7
     3
 */
-//Xem count.c, Week 13 - Đang sai: Sửa đi
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+typedef struct tree
+{
+    int data;
+    struct tree* LeftMostChild;
+    struct tree* RightSibling;
+}node;
+node* root;
+node* MakeRoot(int u){
+    node* newNode = (node*)malloc(sizeof(node));
+    if (newNode == NULL) return NULL;
+    else{
+        newNode->data = u;
+        newNode->LeftMostChild = NULL;
+        newNode->RightSibling = NULL;
+        return newNode;
+    }
+}
+node* find(node* root, int data){ 
+    if (root == NULL) return NULL;
+    if (root->data == data) return root;
+    node* p = root->LeftMostChild;
+    while (p != NULL) {
+        node* q = find(p, data);
+        if (q != NULL) return q;
+        p = p->RightSibling;
+    }
+    return NULL;
+}
+node* Insert(int u, int v){
+    node* p = find(root, v);
+    if (p != NULL){
+        if (p->LeftMostChild == NULL) {
+            p->LeftMostChild = MakeRoot(u); 
+            return p->LeftMostChild;
+        }
+        else {
+            node* new = p->LeftMostChild;
+            while (new->RightSibling != NULL) new = new->RightSibling;
+            new->RightSibling = MakeRoot(u);
+            return new->RightSibling;
+        }
+    }
+    return NULL;
+}
+int CountLeaves(node* r){
+    int leaves = 0;
+    if (r == NULL) return 0; 
+    if (r->LeftMostChild == NULL) return 1;
+    for (node* p = r->LeftMostChild; p!= NULL; p = p->RightSibling){
+        leaves += CountLeaves(p);
+    }
+    return leaves;
+}
+int CountKChildren(node* r, int k){
+    int count = 0;
+    if (r == NULL) return 0;
+    int nodes = 0;
+    for (node* p = r->LeftMostChild; p != NULL; p = p->RightSibling) nodes++;
+    if (nodes == k) count++;
+    for (node* p = r->LeftMostChild; p != NULL; p = p->RightSibling) count += CountKChildren(p, k);
+    return count;
+}
+void traversal(node* root){
+    node* p = root->LeftMostChild;
+    while (p != NULL) {
+        traversal(p);
+        p = p->RightSibling;
+    }
+}
+int main(int argc, char const *argv[])
+{
+    freopen("input.txt","r",stdin);
+    char input[20]; int u, v, k;
+    while(1){
+        scanf("%s", input);
+        if(strcmp(input, "MakeRoot") == 0){
+            scanf("%d", &u); 
+            root = MakeRoot(u);
+        }
+        if(strcmp(input, "Insert") == 0){
+            scanf("%d %d", &u, &v);
+            Insert(u, v);
+        }
+        if(strcmp(input, "CountLeaves") == 0){
+            scanf("%d", &u);
+            node* r = find(root, u);
+            int leaf = CountLeaves(r);
+            printf("%d\n", leaf);
+        }
+        if(strcmp(input, "CountKChildren") == 0){
+            scanf("%d %d", &u, &k);
+            node* r = find(root, u);
+            int child = CountKChildren(r, k);
+            printf("%d\n", child);
+        }
+        if(strcmp(input, "*") == 0) break;
+    }
+    //traversal(root);
+    return 0;
+}
