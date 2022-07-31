@@ -1,4 +1,4 @@
-/*
+/*  DONE
     Given a string s[1…k] which is a sequence of characters taken from {‘a’, . . ., ‘z’}. 
     Given a positive integer m, the hash code of s is defined by the formula:
     H(s) =  (s[1]*256^(k-1) + s[2]*256^(k-2) + . . . + s[k]*256^0) mod m  
@@ -30,22 +30,27 @@
 #define MAX_LENGTH 200
 int n, m, hash, k;
 char s[MAX_LENGTH];
-int StringHash(char* s, int k){
-    for(int i = 0; i < strlen(s); i++){
-        k--;
-        hash = hash + s[i]*256^k;
+int StringHash(char* s){
+    hash = 0;
+    for (int i = 0; i < strlen(s); i++){
+        hash = (hash * 256 + s[i])%m;
     }
-    hash = hash % m;
     return hash;
 }
 int main(int argc, char const *argv[])
 {
+    freopen("input.txt", "r", stdin);
     scanf("%d %d", &n, &m);
-    k = strlen(s);
-    while (1)
+    for (int i = 0; i < 4; i++)
     {
         scanf("%s", s);
-        printf("%d\n", StringHash(s, k));
+        printf("%d\n", StringHash(s)); 
     }
     return 0;
 }
+/**
+ * @brief 
+ * Should NOT use power function in C "^"
+ *  int p = 256^k;
+    hash = (hash + s[i]*p) % m;
+ */

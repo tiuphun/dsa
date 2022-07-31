@@ -8,7 +8,7 @@
     Line 3: b1,…,bm
 
     Output
-    Write to stdout T lines, each line t contains 1 if the sequences of the t-thtest are equal, 
+    Write to stdout T lines, each line t contains 1 if the sequences of the t-th test are equal, 
     and write 0, otherwise.
     
     Example
