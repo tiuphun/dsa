@@ -1,4 +1,4 @@
-/*
+/*  DONE
     Perform a sequence of operations over a stack, each element is an integer:
     PUSH v: push a value v into the stack
     POP: remove an element out of the stack and print this element to stdout (print NULL if the stack is empty)

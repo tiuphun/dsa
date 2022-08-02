@@ -1,4 +1,5 @@
-/* Count number of solutions to place n queens on a chess board n x n (rows and columns are indexed 1, 2, 3, ..., n) such that no two queens attack each other.
+/*  Count number of solutions to place n queens on a chess board n x n 
+    (rows and columns are indexed 1, 2, 3, ..., n) such that no two queens attack each other.
 
     Input
     Line 1: a positive integer n (1 <= n <= 20)

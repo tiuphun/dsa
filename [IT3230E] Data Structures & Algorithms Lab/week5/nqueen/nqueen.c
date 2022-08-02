@@ -1,7 +1,7 @@
 #include <stdio.h>
 #define MAX 9
 int n;
-int x[MAX];
+int x[MAX] = {};
 int check(int v, int k){
     for (int i = 1; i <= k-1; i++)
     {
@@ -34,5 +34,7 @@ int main(int argc, char const *argv[])
     return 0;
 }
 /* Documentation:
-
+    n = 1 -> the problem has a trivial solution
+    n = 2 and n = 3 -> no solution
+    => Consider from n >= 4
 */
