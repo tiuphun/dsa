@@ -1,5 +1,5 @@
-//The travelling salesman problem using backtracking.
-/* NOT DONE
+// The travelling salesman problem using backtracking.
+/* DONE
 There are n cities 1, 2, ..., n. The travel distance from city i to city j is c(i,j), for i,j = 1, 2, ..., n.  
 A person departs from city 1, visits each city 2, 3, ..., n exactly once and comes back to city 1. 
 Find the itinerary for that person so that the total travel distance is minimal.
@@ -27,14 +27,14 @@ int n;                      //number of cities
 int c[N][N];                //the distance matrix 
 int x[N];                   //the route x[1]->x[2]->x[3]->...->x[n]->x[1]
 int curDistance = 0;        //current travelled distance of the route in concern
-int minDistance = 0;        //minimum distance
+int minDistance = 1e9;      //minimum distance: set the initial value to a really big number so that we could decrease it as we go
 int visited[N] = {0};       //marking array for cities that has been visited
-int cMin = __INT_MAX__;     //smallest distance in the distance matrix
+int cMin = 1e5;             //smallest distance in the distance matrix
 void input(){
     scanf("%d", &n);
-    for (int i = 0; i < n; i++)
+    for (int i = 1; i <= n; i++)
     {
-        for (int j = 0; j < n; j++)
+        for (int j = 1; j <= n; j++)
         {
             scanf("%d", &c[i][j]);
             if (i != j && cMin > c[i][j]) cMin = c[i][j];
@@ -49,7 +49,7 @@ void solution(){
         minDistance = curDistance + c[x[n]][x[1]];
 }
 void trial(int k){      // k is the k-th city in the route
-    for (int v = 2; v <= n; v++){
+    for (int v = 1; v <= n; v++){
         if (check(v))
         {
             x[k] = v;
@@ -58,11 +58,13 @@ void trial(int k){      // k is the k-th city in the route
             if (k==n) solution();
             else{
                 int expectDistance = curDistance + cMin*(n-k+1);
-                if (minDistance > expectDistance) trial(k+1);
+                if (minDistance > expectDistance) trial(k+1); 
+                //only try the next iteration if the expected distance is smaller than the current minimum distance
             }
+            visited[v] = 0;
+            curDistance = curDistance - c[x[k-1]][x[k]];
         }
-        visited[v] = 0;
-        curDistance = curDistance - c[x[k-1]][x[k]];
+        
     }
 }
 int main(int argc, char const *argv[])
