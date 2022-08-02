@@ -1,4 +1,5 @@
 //Simple binary search tree implementation with only an int as record
+//WRONG - Please don't use
 #include <stdio.h>
 #include <stdlib.h>
 typedef struct TreeNode
@@ -119,8 +120,8 @@ node* insert(node* root, int key){
 node* delete(node* root, int k) { 
     node* y;
     if (root == NULL) return NULL;
-    else if (k < root->key) root->left = delete(k, root->left); /* go left */ 
-    else if (k > root->key) root->right = delete(k, root->right); /* go right */ 
+    else if (k < root->key) root->left = delete(root->left, k); /* go left */ 
+    else if (k > root->key) root->right = delete(root->right, k); /* go right */ 
     else /* found the node to be deleted, and pointed by root*/
     if (root->left != NULL && root->right != NULL)
     {
