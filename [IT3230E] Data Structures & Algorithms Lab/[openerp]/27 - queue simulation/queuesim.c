@@ -1,4 +1,4 @@
-/* WRONG
+/* DONE <- Code by Mai Duc An, ref from GitHub
     Perform a sequence of operations over a queue, each element is an integer:
     PUSH v: push a value v into the queue
     POP: remove an element out of the queue and print this element to stdout (print NULL if the queue is empty)
@@ -39,8 +39,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define EMPTY INT32_MAX
-#define SIZE 10
+#define EMPTY 10000007
+#define SIZE 20
 typedef struct queue{
     int data;
     struct queue* next;
@@ -59,30 +59,31 @@ node* queueCreate(int key){
         return newNode;
     }
 }
-void queuePush(node* head, node* tail, int key){
-    node* newNode = queueCreate(key);
-    if (queueEmpty(head)) {
-        head = newNode;
+
+void queuePush(int num)
+{
+    node* newNode = queueCreate(num);
+    if (queueEmpty(head))
+    {
+        head = newNode; 
         tail = newNode;
         return;
     }
-    else {
-        tail->next = newNode;
-        tail = newNode;
-        return;
-    }
+    tail->next = newNode; tail = newNode;
 }
 
-void queuePop(node* head){
-    if (queueEmpty(head)){
-        pop[count] = EMPTY; count++;
+void queuePop()
+{
+    if (queueEmpty(head)) 
+    {
+        pop[count]= EMPTY;count++;
         return;
-    }
-    node* tmp = head;
-    pop[count] = tmp->data; count++;
-    head = tmp->next;
+    }    
+    node* temp = head;
+    pop[count] = temp->data; count++;
+    head = temp->next;
     if (head == NULL) tail = NULL;
-    free(tmp);
+    free(temp);
 }
 
 int main(int argc, char const *argv[])
@@ -93,10 +94,10 @@ int main(int argc, char const *argv[])
         scanf("%s", cmd);
         if (strcmp(cmd, "PUSH") == 0){
             scanf("%d", &key);
-            queuePush(head, tail, key);
+            queuePush(key);
         }
         else if (strcmp(cmd, "POP") == 0){
-            queuePop(head);
+            queuePop();
         }
         else if (strcmp(cmd, "#") == 0) break;
     }
