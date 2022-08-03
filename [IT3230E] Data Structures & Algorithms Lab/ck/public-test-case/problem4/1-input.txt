@@ -1,0 +1,22 @@
+T000000003 T000000005 15 21:08:54 atm5
+T000000001 T000000004 55 19:08:20 atm1
+T000000005 T000000002 48 01:53:55 atm2
+T000000005 T000000001 36 06:30:51 atm5
+T000000002 T000000001 81 12:08:06 atm4
+T000000003 T000000004 90 00:26:50 atm5
+T000000004 T000000003 73 16:44:26 atm2
+T000000004 T000000004 92 22:40:47 atm1
+T000000001 T000000002 63 05:16:02 atm3
+T000000002 T000000005 51 18:54:27 atm1
+#
+?total_money_transaction_from T000000004
+?total_money_transaction_from T000000005
+?total_money_transaction_from T000000002
+?total_money_transaction_from T000000005
+?total_money_transaction_from T000000001
+?total_money_transaction_from T000000004
+?total_money_transaction_from T000000005
+?total_money_transaction_from T000000002
+?total_money_transaction_from T000000001
+?total_money_transaction_from T000000005
+#
