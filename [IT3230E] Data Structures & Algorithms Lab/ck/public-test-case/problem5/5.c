@@ -41,6 +41,13 @@ node* find(node* root, char* number){
     else return find(root->leftChild, number);
 }
 
+int inspectCycle(char* acc, int n){
+    int length = 0;
+    while (length != n){
+        
+    }
+}
+
 void input(){
     char from_account[21], to_account[21], time_point[9], atm[10];
     int money; 
