@@ -12,9 +12,9 @@ void swap(int* a, int* b){
 }
 
 //A - ARRAY STARTED IN INDEX 1
-    int leftChild = 2*i;
-    int rightChild = 2*i + 1;
-    (Same idea as below, please be careful of the variable values.)
+    // int leftChild = 2*i;
+    // int rightChild = 2*i + 1;
+    //(Same idea as below, please be careful of the variable values.)
     
 
 //B - ARRAY STARTED IN INDEX 0 - CHECKED
